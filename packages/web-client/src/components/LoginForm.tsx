@@ -13,9 +13,6 @@ const LoginForm: React.FC = () => {
     event.preventDefault();
     login(formState)
       .unwrap()
-      .then((data) => {
-        console.info('success response: ', data);
-      })
       .catch((error) => {
         console.error('error response: ',error);
     });

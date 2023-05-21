@@ -55,7 +55,6 @@ export const authApi = createApi({
         baseUrl: 'http://localhost:3000/api',
         prepareHeaders: (headers, { getState }) => {
             const token = (getState() as any).token?.accessToken;
-            // console.log('token', token);
             if (token) {
                 headers.set('authorization', `Bearer ${token}`);
             }

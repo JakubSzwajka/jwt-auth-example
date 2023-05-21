@@ -19,12 +19,12 @@ export class AuthService {
     async login(user: User) {
         const payload = { email: user.email, sub: user.id };
         const accessToken = this.jwtService.sign(payload, { secret: process.env.JWT_ACCESS_SECRET, expiresIn: '1m' });
-        // const refreshToken = this.jwtService.sign(payload, { secret: process.env.JWT_REFRESH_SECRET, expiresIn: '7d' });
-        // this.usersService.updateRefreshToken(user.id, refreshToken);
+        const refreshToken = this.jwtService.sign(payload, { secret: process.env.JWT_REFRESH_SECRET, expiresIn: '7d' });
+        this.usersService.updateRefreshToken(user.id, refreshToken);
 
         return {
             access_token: accessToken,
-            // refresh_token: refreshToken,
+            refresh_token: refreshToken,
         };
     }
 }

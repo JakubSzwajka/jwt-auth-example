@@ -11,9 +11,6 @@ const UsersList = () => {
   const handleRefetch = () => {
     refetch()
       .unwrap()
-      .then((data) => {
-        console.info('success response: ', data);
-      })
       .catch((error) => {
         setMessage(error.data.message);
         setShowToast(true);
