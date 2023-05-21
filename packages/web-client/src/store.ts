@@ -1,11 +1,11 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { authApi } from "./services/auth";
+import { authApi, tokenReducer } from "./services/auth";
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
-
 
 export const store = configureStore({
     reducer: combineReducers({
         [authApi.reducerPath]: authApi.reducer,
+        token: tokenReducer,
     }),
     devTools: true,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authApi.middleware),

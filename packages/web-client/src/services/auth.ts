@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import jwtDecode from 'jwt-decode';
 
 
 export type LoginResponse = {
@@ -11,21 +12,31 @@ export type LoginRequest = {
     password: string;
 }
 
+type DecodedToken = {
+    username: string;
+    iat: number;
+    exp: number;
+    sub: string;
+} | null;
+
 const tokenSlice = createSlice({
     name: 'token',
-    initialState: null,
+    initialState: null as DecodedToken,
     reducers: {
-        setToken: (state, action) => {
-            return action.payload;
-        },
         removeToken: (state, action) => {
             return null;
         },
     },
+    extraReducers: (builder) => {
+        builder.addMatcher(authApi.endpoints.login.matchFulfilled, (state, action) => {
+            const decoded: DecodedToken = jwtDecode(action.payload.access_token);
+            return decoded ; 
+        });
+    }
 });
 
+export const tokenReducer = tokenSlice.reducer;
 
-const { setToken, removeToken } = tokenSlice.actions;
 
 export const authApi = createApi({
     reducerPath: 'authApi',
@@ -39,14 +50,6 @@ export const authApi = createApi({
                 method: 'POST',
                 body: credentials,
             }),
-            onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
-                try {
-                    const {data} = await queryFulfilled;
-                    dispatch(setToken(data.access_token));
-                } catch (err) {
-                    console.error(err);
-                }
-            }
         }),
     }),
 });
