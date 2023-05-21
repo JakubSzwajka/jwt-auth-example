@@ -1,12 +1,14 @@
-import { Controller, Get, Request} from "@nestjs/common";
+import { Controller, Get, Logger, Req, Request} from "@nestjs/common";
 import { UsersService } from "./users.service";
 
 @Controller('users')
 export class UsersController {
+    private readonly logger = new Logger(UsersController.name);
     constructor(private readonly usersService: UsersService) {}
 
     @Get()
-    findAll() {
+    findAll(@Req() request) {
+        this.logger.log(`Cookies: ${request.cookies}`);
         return this.usersService.findMany();
     }
 

@@ -59,7 +59,8 @@ export const authApi = createApi({
                 headers.set('authorization', `Bearer ${token}`);
             }
             return headers;
-        }
+        },
+        credentials: 'include',
     }),
     endpoints: (builder) => ({
         login: builder.mutation<LoginResponse, LoginRequest>({
