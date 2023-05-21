@@ -2,6 +2,7 @@ import Card from './Card';
 import Divider from './Divider';
 import LoginForm from './LoginForm';
 import UserProfile from './UserProfile';
+import UsersList from './UsersList';
 
 const LoginPage = () => {
   return (
@@ -14,13 +15,15 @@ const LoginPage = () => {
         >
           Hello 👋
         </span>
-          <Card>
-            <LoginForm />
-          </Card>
+        <Card>
+          <LoginForm />
+        </Card>
+        <Divider />
+        <Card>
+          <UserProfile />
           <Divider />
-          <Card>
-            <UserProfile />
-          </Card>
+          <UsersList />
+        </Card>
       </div>
     </section>
   );
