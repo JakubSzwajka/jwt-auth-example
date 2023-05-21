@@ -8,6 +8,7 @@
     "@nx/eslint-plugin": "16.2.1",
     "@nx/js": "16.2.1",
     "@nx/linter": "16.2.1",
+    "@nx/nest": "^16.2.1",
     "@nx/react": "^16.2.1",
     "@nx/vite": "16.2.1",
     "@swc/cli": "~0.1.62",
