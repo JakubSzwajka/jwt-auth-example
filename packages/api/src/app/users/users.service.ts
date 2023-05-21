@@ -18,4 +18,14 @@ export class UsersService {
         return this.prismaService.user.findMany();
     }
 
+    async updateRefreshToken(id: number, refreshToken: string): Promise<User> {
+        return this.prismaService.user.update({
+            where: {
+                id,
+            },
+            data: {
+                refreshToken,
+            },
+        });
+    }
 }
