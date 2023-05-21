@@ -8,7 +8,7 @@ export class UsersController {
 
     @Get()
     findAll(@Req() request) {
-        this.logger.log(`Cookies: ${request.cookies}`);
+        this.logger.log(`Cookies: ${request.cookies['refresh_token']}`);
         return this.usersService.findMany();
     }
 
