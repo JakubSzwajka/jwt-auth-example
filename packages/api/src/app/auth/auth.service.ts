@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
-    
+    logger = new Logger(AuthService.name);
     constructor(private usersService: UsersService, private jwtService: JwtService) {}
 
     async validateUser(email: string, pass: string): Promise<User | null> {
@@ -25,6 +25,19 @@ export class AuthService {
         return {
             access_token: accessToken,
             refresh_token: refreshToken,
+        };
+    }
+
+    async refresh(refreshToken: string) {
+        const {exp, iat, ...payload} = this.jwtService.verify(refreshToken, { secret: process.env.JWT_REFRESH_SECRET });
+        this.logger.log(`Payload: ${JSON.stringify(payload)}`);
+        const accessToken = this.jwtService.sign(payload, { secret: process.env.JWT_ACCESS_SECRET, expiresIn: '1m' });
+        const newRefreshToken = this.jwtService.sign(payload, { secret: process.env.JWT_REFRESH_SECRET, expiresIn: '7d' });
+        this.usersService.updateRefreshToken(payload.sub, newRefreshToken);
+
+        return {
+            access_token: accessToken,
+            refresh_token: newRefreshToken,
         };
     }
 }

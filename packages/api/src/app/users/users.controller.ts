@@ -12,7 +12,6 @@ export class UsersController {
         return this.usersService.findMany();
     }
 
-
     @Get('profile')
     getProfile(@Request() req) {
         return req.user;
